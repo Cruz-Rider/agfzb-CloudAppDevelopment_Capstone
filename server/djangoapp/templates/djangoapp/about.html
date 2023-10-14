@@ -20,28 +20,61 @@
             <div class="navbar-nav">    
                 <ul class="navbar-nav flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" style="margin-right:10px" href="#">Home</a>
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:index' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="margin-right:10px" href="#">About Us</a>
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:about' %}">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="margin-right:10px" href="#">Contact Us</a>                
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:contact' %}">Contact Us</a>                
                     </li>
                 </ul>
             </div>
         </nav>
-        <div class="jumbotron rounded-lg">
-            <h4 class="display-4">About Us<h4> 
+        <div class="jumbotron rounded-lg bg-secondary text-white my-4">
+            <h2 class="mb-4 text-light">About Us: PremierAutoPinnacle</h2> 
             <p class="lead">Welcome to Best Cars dealership,
                 home to the best cars in North America. 
                 We sell domestic and imported cars at reasonable prices.
             </p>
             <hr class="my-4">
-            <button type="button" class="btn btn-info collapsable" data-toggle="collapse" data-target="#learnMore">Learn More</button>
+            <button type="button" class="btn btn-info collapsable mb-4" data-toggle="collapse" data-target="#learnMore">Learn More</button>
                 <div class="collapse content" id="learnMore">
-                    <p>Hello World!</p>
+                    <p class="mb-2"> Welcome to <strong>PremierAutoPinnacle</strong>, 
+                        your trusted destination for exceptional automotive experiences. 
+                        As a national car dealership with a network of local branches spanning the United States, 
+                        we are committed to providing you with unparalleled service, top-quality vehicles, 
+                        and complete transparency throughout your car buying journey.</p>
+                    <p class="my-2">Our journey begins with a commitment to innovation and customer satisfaction. 
+                        In response to valuable feedback from our customers, 
+                        we embarked on a mission to create a centralized platform that allows you to 
+                        access dealership reviews from across the country. 
+                        This platform was born out of a desire to enhance transparency, build trust, 
+                        and empower you, our valued customers, to make informed decisions.</p>
                 </div>
+        </div>
+        <div class="card-deck my-4">
+            <div class="card bg-info text-white">
+                <div class="card-header">Our Team</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        At PremierAutoPinnacle, we're proud to introduce our dedicated team of professionals who share a passion for the automotive industry. 
+                        Led by our Lead Cloud Application Developer, we've leveraged the best practices in cloud application development to build a robust and user-friendly website that caters to your unique needs. 
+                        Our commitment to excellence is reflected in the user experiences we've crafted for you.
+                    </p>
+                </div>
+            </div>
+            <div class="card bg-info text-white">
+                <div class="card-header">Our Commitment</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        At PremierAutoPinnacle, we are committed to delivering a transparent and customer-centric experience. 
+                        We believe that by providing you with the tools and resources you need to make informed decisions, 
+                        we can build trust and strengthen our relationship with you. Our journey is just beginning, 
+                        and we invite you to be a part of it.
+                    </p>
+                </div>
+            </div>
         </div>
     </body>
 

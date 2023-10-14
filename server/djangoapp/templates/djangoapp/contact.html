@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dealership Review</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+</head>
+
+    <body class="container-fluid">
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Dealership Review</a>
+            <div class="navbar-nav">    
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:about' %}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="margin-right:10px" href="{% url 'djangoapp:contact' %}">Contact Us</a>                
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="card bg-info text-center text-white my-4">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark active" href="#" data-section="address">Address</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#" data-section="tele_mail">Tele/Mail</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#" data-section="social">Social</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="card-section" id="address">
+                    <h5 class="card-title">Address</h5>
+                    <p class="card-text">Suite 614 767 Joellen Extensions,<br>
+                        East Antoine,<br>
+                        IN 81632-4093</p>
+                </div>
+                <div class="card-section" id="tele_mail" style="display: none;">
+                    <h5 class="card-title">Tele/Mail</h5>
+                    <p class="card-text">
+                        <strong>Tele:</strong> +100-5489-8965-5522<br>
+                        <strong>Fax:</strong> (020) 380-89435<br>
+                        <strong>Mail:</strong> premierautopinnacle9977@hotmail.com<br>
+                    </p>
+                </div>
+                <div class="card-section" id="social" style="display: none;">
+                    <h5 class="card-title">Social</h5>
+                    <p class="card-text">This is the content for Section 3.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.nav-link').on('click', function (e) {
+                e.preventDefault();
+                const sectionId = $(this).data('section');
+                $('.nav-link').removeClass('active'); // Remove "active" class from all links
+                $(this).addClass('active'); // Add "active" class to the clicked link
+                $('.card-section').hide();
+                $('#' + sectionId).show();
+            });
+        });
+    </script>
+
+    </body>
+
+</html>
