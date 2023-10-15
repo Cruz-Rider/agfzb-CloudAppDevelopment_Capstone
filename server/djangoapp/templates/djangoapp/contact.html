@@ -31,54 +31,30 @@
                 </ul>
             </div>
         </nav>
-        <div class="card bg-info text-center text-white my-4">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark active" href="#" data-section="address">Address</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="#" data-section="tele_mail">Tele/Mail</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="#" data-section="social">Social</a>
-                    </li>
-                </ul>
+        <div class="row bg-dark text-white text-wrap rounded-pill m-4">
+            <div class="col-md">
+                <h5 class="alert-info rounded-pill text-center">Address</h5>
+                <p class="text-center">Suite 614 767 Joellen Extensions,<br>
+                    East Antoine,<br>
+                    IN 81632-4093</p>
             </div>
-            <div class="card-body">
-                <div class="card-section" id="address">
-                    <h5 class="card-title">Address</h5>
-                    <p class="card-text">Suite 614 767 Joellen Extensions,<br>
-                        East Antoine,<br>
-                        IN 81632-4093</p>
-                </div>
-                <div class="card-section" id="tele_mail" style="display: none;">
-                    <h5 class="card-title">Tele/Mail</h5>
-                    <p class="card-text">
-                        <strong>Tele:</strong> +100-5489-8965-5522<br>
-                        <strong>Fax:</strong> (020) 380-89435<br>
-                        <strong>Mail:</strong> premierautopinnacle9977@hotmail.com<br>
-                    </p>
-                </div>
-                <div class="card-section" id="social" style="display: none;">
-                    <h5 class="card-title">Social</h5>
-                    <p class="card-text">This is the content for Section 3.</p>
+            <div class="col-md">
+                <h5 class="alert-info rounded-pill text-center">Tele/Mail</h5>
+                <p class="text-center">
+                    <strong>Tele:</strong> +100-5489-8965-5522<br>
+                    <strong>Fax:</strong> (020) 380-89435<br>
+                    <strong>Mail:</strong> premierautopinnacle9977@hotmail.com<br>
+                </p>
+            </div>
+            <div class="col-md">
+                <h5 class="alert-info text-center rounded-pill">Social</h5>
+                <div class="container-fluid text-center text-wrap rounded-lg m-2">
+                    <div class="row float-center">
+                        <img class="col-1 img-thumbnail" src="">  
+                        <a  class="col" href="https://www.linkedin.com/in/username">LinkedIn</a>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            $('.nav-link').on('click', function (e) {
-                e.preventDefault();
-                const sectionId = $(this).data('section');
-                $('.nav-link').removeClass('active'); // Remove "active" class from all links
-                $(this).addClass('active'); // Add "active" class to the clicked link
-                $('.card-section').hide();
-                $('#' + sectionId).show();
-            });
-        });
-    </script>
 
     </body>
 
