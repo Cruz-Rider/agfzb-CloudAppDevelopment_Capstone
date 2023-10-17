@@ -14,8 +14,10 @@ import json
 logger = logging.getLogger(__name__)
 
 
-# Create your views here.
-
+def get_dealerships(request):
+    context = {}
+    if request.method == "GET":
+        return render(request, 'djangoapp/index.html', context)
 
 # Create an `about` view to render a static about page
 def about(request):
@@ -30,22 +32,28 @@ def contact(request):
         return render(request, 'djangoapp/contact.html')
 
 # Create a `login_request` view to handle sign in request
-# def login_request(request):
-# ...
+def login_request(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user.authenticate(request, username=username, password=password)
+        
+        if not user:
+            return "Invalid credentials"
+        else:
+            login(request, user)
+            return render(request, 'djangoapp/index.html')
 
 # Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+def logout_request(request):
+    if request.method == 'POST':
+        logout(request)
+        return HttpResponseRedirect(reverse('djangoapp:index'))
+    return render(request, 'djangoapp/index.html')
 
 # Create a `registration_request` view to handle sign up request
 # def registration_request(request):
 # ...
-
-# Update the `get_dealerships` view to render the index page with a list of dealerships
-def get_dealerships(request):
-    context = {}
-    if request.method == "GET":
-        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer

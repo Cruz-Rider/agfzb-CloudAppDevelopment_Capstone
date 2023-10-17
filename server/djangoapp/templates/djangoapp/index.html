@@ -30,6 +30,24 @@
                     </li>
                 </ul>
             </div>
+            {% if not user.is_authenticated %}
+            <form class="form-inline" method="post" action="{% url 'djangoapp:login' %}">
+                {% csrf_token %}
+                <label class="mx-1 text-white" for="username">Username</label>
+                <input class="form-control mx-2" type="text" id="username" placeholder="Enter Username">
+                <label class="mx-1 text-white" for="password">Password</label>
+                <input class="form-control mx-2" type="password" id="password" placeholder="Enter Password">
+                <button class="btn btn-success" type="submit">Login</button> 
+            </form>
+            <form class="form-inline" method="post" action="{% url 'djangoapp:signup' %}">
+                <button class="btn btn-primary" type="submit">Sign Up</button>
+            </form>
+            {% else %}
+            <form class="form-inline" metod="post" action="{% url 'djangoapp:logout' %}">
+                <p class="text-white text-center m-2">Welcome, <strong>{{user.username}}!</strong></p>
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            {% endif %}
         </nav>
     </body>
 
