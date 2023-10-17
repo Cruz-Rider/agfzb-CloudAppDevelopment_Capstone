@@ -30,6 +30,24 @@
                     </li>
                 </ul>
             </div>
+            {% if not user.is_authenticated %}
+            <form class="form-inline" method="post" action="{% url 'djangoapp:login' %}">
+                {% csrf_token %}
+                <input class="form-control mx-2" type="text" name="username" placeholder="Enter Username">
+                <input class="form-control mx-2" type="password" name="password" placeholder="Enter Password">
+                <button class="btn btn-success" type="submit">Login</button> 
+            </form>
+            <form class="form-inline" method="get" action="{% url 'djangoapp:signup' %}">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Sign Up</button>
+            </form>
+            {% else %}
+            <form class="form-inline" metod="post" action="{% url 'djangoapp:logout' %}">
+                {% csrf_token %}
+                <p class="text-white text-center m-2">Welcome, <strong>{{user.username}}!</strong></p>
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            {% endif %}
         </nav>
         <div class="jumbotron rounded-lg bg-secondary text-white my-4">
             <h2 class="mb-4 text-light">About Us: PremierAutoPinnacle</h2> 

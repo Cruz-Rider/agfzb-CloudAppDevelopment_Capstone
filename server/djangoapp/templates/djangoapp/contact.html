@@ -30,13 +30,31 @@
                     </li>
                 </ul>
             </div>
+            {% if not user.is_authenticated %}
+            <form class="form-inline" method="post" action="{% url 'djangoapp:login' %}">
+                {% csrf_token %}
+                <input class="form-control mx-2" type="text" name="username" placeholder="Enter Username">
+                <input class="form-control mx-2" type="password" name="password" placeholder="Enter Password">
+                <button class="btn btn-success" type="submit">Login</button> 
+            </form>
+            <form class="form-inline" method="get" action="{% url 'djangoapp:signup' %}">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Sign Up</button>
+            </form>
+            {% else %}
+            <form class="form-inline" metod="post" action="{% url 'djangoapp:logout' %}">
+                {% csrf_token %}
+                <p class="text-white text-center m-2">Welcome, <strong>{{user.username}}!</strong></p>
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            {% endif %}
         </nav>
         <div class="row bg-dark text-white text-wrap rounded-pill m-4">
             <div class="col-md">
                 <h5 class="alert-info rounded-pill text-center">Address</h5>
-                <p class="text-center">Suite 614 767 Joellen Extensions,<br>
+                <address class="text-center">Suite 614 767 Joellen Extensions,<br>
                     East Antoine,<br>
-                    IN 81632-4093</p>
+                    IN 81632-4093</address>
             </div>
             <div class="col-md">
                 <h5 class="alert-info rounded-pill text-center">Tele/Mail</h5>
