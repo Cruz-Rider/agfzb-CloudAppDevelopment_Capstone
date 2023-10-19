@@ -12,7 +12,6 @@ class CarMake(models.Model):
     def __str__(self):
         return "Name: " + self.name + ", " \
                 "Country: " + self.country_origin + ", " \
-                "Year: " + self.estd_year + ", " \
                 "Description: " + self.description + ", " \
                 "Website: " + self.website + ", " \
                 "Contact: " + self.contact
@@ -42,7 +41,6 @@ class CarModel(models.Model):
     def __str__(self):
         return "Name: " + self.name + ", " \
                 "Type: " + self.type + ", " \
-                "Price: " + self.price + ", " \
                 "Features: " + self.features
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
