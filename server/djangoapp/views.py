@@ -56,7 +56,7 @@ def logout_request(request):
 
 def get_dealerships(request):
     if request.method == "GET":
-        url = "your-cloud-function-domain/dealerships/dealer-get"
+        url = "https://u1999shishir-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         dealerships = get_dealers_from_cf(url)
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         return HttpResponse(dealer_names)
@@ -70,9 +70,12 @@ def contact(request):
     if request.method == 'GET':
         return render(request, 'djangoapp/contact.html')
 
-# Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    if request.method == "GET":
+        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id=15"
+        reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        dealer_reviews = ' '.join([review.review for review in reviews])
+        return HttpResponse(dealer_reviews) 
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
