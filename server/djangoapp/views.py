@@ -2,15 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarMake, CarModel, CarDealer
-from .restapis import get_request, get_dealers_from_cf
+from .models import CarMake, CarModel, CarDealer, DealerReview
+from .restapis import get_request, get_dealers_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
 import json
 
-# Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
@@ -72,10 +71,13 @@ def contact(request):
 
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
-        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews?id=15"
-        reviews = get_dealer_reviews_from_cf(url, dealer_id)
-        dealer_reviews = ' '.join([review.review for review in reviews])
-        return HttpResponse(dealer_reviews) 
+        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        dealer_details = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        dealer_reviews = ' '.join([detail.review for detail in dealer_details])
+        review_sentiment = [detail.sentiment for detail in dealer_details]
+        sentiment = ', '.join(str(sentiment) for sentiment in review_sentiment)
+        print(sentiment)
+        return HttpResponse(dealer_reviews, sentiment) 
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):

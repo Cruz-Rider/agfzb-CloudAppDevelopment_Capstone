@@ -1,6 +1,6 @@
 import requests
 import json
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
 def get_request(url, **kwargs):
@@ -36,7 +36,7 @@ def get_dealers_from_cf(url, **kwargs):
 
 def get_dealer_by_id(url, **kwargs):
     result =[]
-    json_result = get_request(url, dealerID=dealer_id)
+    json_result = get_request(url, id=dealer_id)
     if json_result:
         dealers = json_result
         for dealer in dealers:
@@ -66,7 +66,8 @@ def get_dealer_by_state(url, **kwargs):
 
 def get_dealer_reviews_from_cf(url, **kwargs):
     results = []
-    json_result = get_request(url, dealerID=dealer_id)
+    dealer_id = kwargs['dealer_id']
+    json_result = get_request(url, id=dealer_id)
     if json_result:
         dealer_reviews = json_result
         for dealer_review in dealer_reviews:
@@ -75,12 +76,23 @@ def get_dealer_reviews_from_cf(url, **kwargs):
                                    id=dealer_doc["id"], purchase=dealer_doc["purchase"], purchase_date=dealer_doc["purchase_date"],
                                    car_make=dealer_doc["car_make"], car_model=dealer_doc["car_model"], 
                                    car_year=dealer_doc["car_year"])
+            dealer_obj.sentiment = analyze_review_sentiments(dealer_obj.review)
             results.append(dealer_obj)
     
     return results
 
-
-# Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
-# - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or Negative
+def analyze_review_sentiments(dealer_review):
+    url = "https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/5b62aed3-bdd1-4d2a-8f0a-d41f4c7f1f72"
+    api_key = "dmVrOJvFaOsZh_oTvmW5faOJj1TFa-_Hgr0wj8OWNSXa"
+    params= {
+        "text": "dealer_review",
+        "version":"2019-07-12",
+        "features": {
+            "sentiment": {}
+        },
+        "return_analyzed_text": "true"
+    }
+    response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                auth=HTTPBasicAuth('apikey', api_key))
+    sentiment_data = response.json()
+    return sentiment_data
