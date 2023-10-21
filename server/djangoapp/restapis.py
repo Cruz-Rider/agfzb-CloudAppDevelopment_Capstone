@@ -2,6 +2,10 @@ import requests
 import json
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson.natural_language_understanding_v1 \
+    import Features, SentimentOptions
 
 def get_request(url, **kwargs):
     print(kwargs)
@@ -84,15 +88,18 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 def analyze_review_sentiments(dealer_review):
     url = "https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/5b62aed3-bdd1-4d2a-8f0a-d41f4c7f1f72"
     api_key = "dmVrOJvFaOsZh_oTvmW5faOJj1TFa-_Hgr0wj8OWNSXa"
-    params= {
-        "text": "dealer_review",
-        "version":"2019-07-12",
-        "features": {
-            "sentiment": {}
-        },
-        "return_analyzed_text": "true"
-    }
-    response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-                                auth=HTTPBasicAuth('apikey', api_key))
-    sentiment_data = response.json()
+    
+    authenticator = IAMAuthenticator(api_key)
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version='2022-04-07',
+        authenticator=authenticator
+        )
+
+    natural_language_understanding.set_service_url(url)
+
+    response = natural_language_understanding.analyze(
+        text = dealer_review,
+        features = Features(sentiment=SentimentOptions(document=True))).get_result()
+
+    sentiment_data = response
     return sentiment_data
