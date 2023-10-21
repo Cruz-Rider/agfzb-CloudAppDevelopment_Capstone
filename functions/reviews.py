@@ -12,7 +12,7 @@ client = Cloudant.iam(cloudant_username, cloudant_api_key, connect=True, url=clo
 session = client.session()
 print('Databases:', client.all_dbs())
 
-db = client['reviews']
+db = client['reviews-full']
 
 app = Flask(__name__)
 

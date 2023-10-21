@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
-from .restapis import get_request, get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_request, post_request, get_dealers_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -76,39 +75,57 @@ def get_dealer_details(request, dealer_id):
         context = {}
         url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
         dealer_details = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
-        context = {'dealer_details': dealer_details}
-        # dealer_reviews = ' '.join([detail.review for detail in dealer_details])
-        # review_sentiment = [detail.sentiment for detail in dealer_details]
-        # sentiment_score = review_sentiment[0]['score'] # print(review_sentiment[0]['score'])
-        # sentiment_label = review_sentiment[0]['label'] # print(review_sentiment[0]['label'])
+        context = {
+            'dealer_details': dealer_details,
+            'dealer_id': dealer_id
+        }
+        print(context)
+        return render(request, 'djangoapp/dealer_details.html', context)
 
-        #result = "Review: " + dealer_reviews + ", " \
-                #"Sentiment: " + sentiment_label 
-        return render(request, 'djangoapp/dealer_details.html', context) 
-
-@login_required
 def add_review(request, dealer_id):
-    if request.method == 'POST':
-        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+    if request.method == 'GET':
+        context = {}
+        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        dealer_details = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        
+        cars = []
+        for detail in dealer_details:
+            car_info = {
+                "id": detail.id,
+                "name": detail.car_model,
+                "make_name": detail.car_make,
+                "year": detail.car_year
+            }
+            cars.append(car_info)
+
+        context = {
+            "cars":cars,
+            'dealer_id': dealer_id
+            }
+        return render(request, 'djangoapp/add_review.html', context)
+    
+    elif request.method == 'POST':
+        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review" 
         if request.user.is_authenticated:
             print("AUthenticated User")
             
+            selected_car = request.POST['car']
+            selected_car_values = selected_car.split('-')
             review = {
-                'id': 6,
-                'name': 'Shishir Shukla', 
+                'name': request.user.username, 
                 'dealership': dealer_id, 
-                'review': 'Lovely car with large capacity and seating space. Best-suited for big families!', 
-                'purchase': true, 
-                'purchase_date': datetime.date.today(), 
-                'car_make': 'Lamborghini', 
-                'car_model': 'Gallado', 
-                'car_year': 2012
+                'review': request.POST['content'], 
+                'purchase': request.POST['purchasecheck'], 
+                'purchase_date': datetime.utcnow().isoformat(), 
+                'car_make': selected_car_values[0], 
+                'car_model': selected_car_values[1], 
+                'car_year': selected_car_values[2]
             }
             json_payload = {
                 'review': review
             }
 
             post_review = post_request(url, json_payload)
-            return HttpResponse(post_review)
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
         else:
             print("Unauthenticated")
