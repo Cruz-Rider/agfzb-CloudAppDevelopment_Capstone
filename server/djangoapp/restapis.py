@@ -20,8 +20,15 @@ def get_request(url, **kwargs):
     json_data = json.loads(response.text)
     return json_data
 
-# Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
+def post_request(url, json_payload, **kwargs):
+    try:
+        response = requests.post(url, params=kwargs, json=json_payload)
+    except:
+        print("Network Error: " + response.status_code)
+    status_code = response.status_code
+    print("With status {}".format(status_code))
+    json_data = json.loads(response.text)
+    return json_data
 
 def get_dealers_from_cf(url, **kwargs):
     results = []
@@ -35,7 +42,6 @@ def get_dealers_from_cf(url, **kwargs):
                                    short_name=dealer_doc["short_name"], state=dealer_doc["state"], 
                                    st=dealer_doc["st"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
-
     return results
 
 def get_dealer_by_id(url, **kwargs):
@@ -101,5 +107,6 @@ def analyze_review_sentiments(dealer_review):
         text = dealer_review,
         features = Features(sentiment=SentimentOptions(document=True))).get_result()
 
-    sentiment_data = response
+    print(response['sentiment']['document'])
+    sentiment_data = response['sentiment']['document']
     return sentiment_data
