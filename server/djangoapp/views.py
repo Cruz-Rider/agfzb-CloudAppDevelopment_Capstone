@@ -94,7 +94,8 @@ def add_review(request, dealer_id):
                 "id": detail.id,
                 "name": detail.car_model,
                 "make_name": detail.car_make,
-                "year": detail.car_year
+                "year": detail.car_year,
+                "dealer": detail.name
             }
             cars.append(car_info)
 
@@ -111,12 +112,18 @@ def add_review(request, dealer_id):
             
             selected_car = request.POST['car']
             selected_car_values = selected_car.split('-')
+
+            if request.POST.get('purchasecheck') == 'on':
+                purchase = True
+            else:
+                purchase = False
             review = {
+                'id': request.POST['id'],
                 'name': request.user.username, 
                 'dealership': dealer_id, 
                 'review': request.POST['content'], 
-                'purchase': request.POST['purchasecheck'], 
-                'purchase_date': datetime.utcnow().isoformat(), 
+                'purchase': purchase, 
+                'purchase_date': request.POST['purchasedate'].strftime("%m/%d/%y"), 
                 'car_make': selected_car_values[0], 
                 'car_model': selected_car_values[1], 
                 'car_year': selected_car_values[2]
@@ -124,7 +131,7 @@ def add_review(request, dealer_id):
             json_payload = {
                 'review': review
             }
-
+            print(request.POST['purchasedate'].strftime("%m/%d/%y"))
             post_review = post_request(url, json_payload)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
         else:
