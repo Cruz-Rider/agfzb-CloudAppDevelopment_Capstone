@@ -50,7 +50,9 @@
             </form>
             {% endif %}
         </nav>
-        <h1 class="text-center">Reviews for <strong>{{ detail.car_make.full_name }}</strong></h1>
+        {% for dealer in dealership %}
+        <h1 class="text-center my-5">Reviews for <strong>{{ dealer.full_name }}</strong></h1>
+        {% endfor %}
         <div class="card-columns my-md-5">
             {% for detail in dealer_details %}
                 <div class="card">

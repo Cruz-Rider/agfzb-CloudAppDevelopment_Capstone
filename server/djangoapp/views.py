@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
-from .restapis import get_request, post_request, get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_request, post_request, get_dealers_from_cf, get_dealer_from_id, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -73,20 +73,24 @@ def contact(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
-        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
-        dealer_details = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        url_1 = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        url_2 = "https://u1999shishir-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        dealer_details = get_dealer_reviews_from_cf(url_1, dealer_id=dealer_id)
+        dealership = get_dealer_from_id(url_2, dealer_id=dealer_id)
         context = {
             'dealer_details': dealer_details,
-            'dealer_id': dealer_id
+            'dealer_id': dealer_id,
+            'dealership': dealership
         }
         return render(request, 'djangoapp/dealer_details.html', context)
 
 def add_review(request, dealer_id):
     if request.method == 'GET':
         context = {}
-        url = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
-        dealer_details = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
-        
+        url_1 = "https://u1999shishir-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        url_2 = "https://u1999shishir-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        dealer_details = get_dealer_reviews_from_cf(url_1, dealer_id=dealer_id)
+        dealership = get_dealer_from_id(url_2, dealer_id=dealer_id)        
         cars = []
         for detail in dealer_details:
             car_info = {
@@ -100,7 +104,8 @@ def add_review(request, dealer_id):
 
         context = {
             "cars":cars,
-            'dealer_id': dealer_id
+            'dealer_id': dealer_id,
+            'dealership': dealership
             }
         return render(request, 'djangoapp/add_review.html', context)
     
