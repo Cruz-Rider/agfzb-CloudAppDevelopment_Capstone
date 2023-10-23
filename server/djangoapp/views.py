@@ -79,7 +79,6 @@ def get_dealer_details(request, dealer_id):
             'dealer_details': dealer_details,
             'dealer_id': dealer_id
         }
-        print(context)
         return render(request, 'djangoapp/dealer_details.html', context)
 
 def add_review(request, dealer_id):
@@ -117,21 +116,27 @@ def add_review(request, dealer_id):
                 purchase = True
             else:
                 purchase = False
+            
+            date_string = request.POST['purchasedate']
+            date_object = datetime.strptime(date_string, "%Y-%m-%d")
+            purchase_date = date_object.strftime("%m/%d/%Y")
+
             review = {
-                'id': request.POST['id'],
-                'name': request.user.username, 
-                'dealership': dealer_id, 
-                'review': request.POST['content'], 
-                'purchase': purchase, 
-                'purchase_date': request.POST['purchasedate'].strftime("%m/%d/%y"), 
-                'car_make': selected_car_values[0], 
-                'car_model': selected_car_values[1], 
-                'car_year': selected_car_values[2]
+                "id": int(request.POST['id']),
+                "name": request.user.username, 
+                "dealership": dealer_id, 
+                "review": request.POST['content'], 
+                "purchase": purchase, 
+                "purchase_date": purchase_date, 
+                "car_make": selected_car_values[0], 
+                "car_model": selected_car_values[1], 
+                "car_year": int(selected_car_values[2])
             }
             json_payload = {
                 'review': review
             }
-            print(request.POST['purchasedate'].strftime("%m/%d/%y"))
+            
+            print(json_payload)
             post_review = post_request(url, json_payload)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
         else:

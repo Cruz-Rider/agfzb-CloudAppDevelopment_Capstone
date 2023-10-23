@@ -101,7 +101,8 @@ def analyze_review_sentiments(dealer_review):
 
     response = natural_language_understanding.analyze(
         text = dealer_review,
-        features = Features(sentiment=SentimentOptions(document=True))).get_result()
+        language = 'en', 
+        features = Features(sentiment=SentimentOptions())).get_result()
 
     print(response['sentiment']['document']['label'])
     sentiment_data = response['sentiment']['document']['label']
